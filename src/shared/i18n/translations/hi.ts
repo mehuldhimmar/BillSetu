@@ -1,0 +1,156 @@
+import { Translations } from './en';
+
+export const hi: Translations = {
+  // Language Selection
+  languageSelection: {
+    title: 'अपनी भाषा चुनें',
+    subtitle: 'कृपया अपनी पसंदीदा भाषा चुनें',
+    continue: 'जारी रखें',
+  },
+
+  // Common
+  common: {
+    back: 'वापस',
+    cancel: 'रद्द करें',
+    apply: 'लागू करें',
+    save: 'सहेजें',
+    delete: 'हटाएं',
+    edit: 'संपादित करें',
+    close: 'बंद करें',
+    ok: 'ठीक है',
+    yes: 'हाँ',
+    no: 'नहीं',
+    loading: 'लोड हो रहा है...',
+    error: 'त्रुटि',
+    success: 'सफलता',
+  },
+
+  // Home / Dashboard
+  home: {
+    greeting: 'नमस्ते',
+    tagline: 'अपने व्यवसाय को आसानी से प्रबंधित करें',
+    createInvoice: 'इनवॉइस बनाएं',
+    invoiceHistory: 'इनवॉइस इतिहास',
+    gstCalculator: 'GST कैलकुलेटर',
+    businessProfile: 'व्यवसाय प्रोफ़ाइल',
+    settings: 'सेटिंग्स',
+    noBusinessName: 'अपना व्यवसाय सेट करें',
+  },
+
+  // Settings
+  settings: {
+    title: 'सेटिंग्स',
+    preferences: 'प्राथमिकताएं',
+    language: 'भाषा',
+    invoicePrefix: 'इनवॉइस उपसर्ग',
+    about: 'के बारे में',
+    privacyPolicy: 'गोपनीयता नीति',
+    termsConditions: 'नियम और शर्तें',
+    rateUs: 'हमें रेट करें',
+    shareApp: 'ऐप शेयर करें',
+    version: 'BillSetu v1.0.0',
+    selectLanguage: 'भाषा चुनें',
+    invoicePrefixPlaceholder: 'जैसे INV-',
+    invalidPrefix: 'अमान्य उपसर्ग',
+    invalidPrefixMessage: 'इनवॉइस उपसर्ग खाली नहीं हो सकता।',
+    errorSave: 'सेटिंग्स सहेजी नहीं जा सकीं। कृपया पुनः प्रयास करें।',
+    errorLink: 'लिंक नहीं खुल सका। कृपया पुनः प्रयास करें।',
+    shareMessage: 'BillSetu के साथ सेकंडों में पेशेवर GST इनवॉइस बनाएं! अभी डाउनलोड करें: https://billsetu.app',
+    shareTitle: 'BillSetu — GST इनवॉइस मेकर',
+  },
+
+  // Business Profile
+  businessProfile: {
+    title: 'व्यवसाय प्रोफ़ाइल',
+    businessName: 'व्यवसाय का नाम',
+    businessNamePlaceholder: 'व्यवसाय का नाम दर्ज करें',
+    address: 'पता',
+    addressPlaceholder: 'पता दर्ज करें',
+    phone: 'फ़ोन',
+    phonePlaceholder: 'फ़ोन नंबर दर्ज करें',
+    email: 'ईमेल',
+    emailPlaceholder: 'ईमेल पता दर्ज करें',
+    gstin: 'GSTIN',
+    gstinPlaceholder: 'GSTIN दर्ज करें (वैकल्पिक)',
+    saveProfile: 'प्रोफ़ाइल सहेजें',
+    profileSaved: 'प्रोफ़ाइल सफलतापूर्वक सहेजी गई।',
+    errorSave: 'प्रोफ़ाइल सहेजी नहीं जा सकी। कृपया पुनः प्रयास करें।',
+    logoHint: 'लोगो जोड़ने के लिए टैप करें',
+    changeLogoHint: 'लोगो बदलने के लिए टैप करें',
+  },
+
+  // Create Invoice
+  invoice: {
+    createTitle: 'इनवॉइस बनाएं',
+    billTo: 'बिल प्राप्तकर्ता',
+    customerName: 'ग्राहक का नाम',
+    customerNamePlaceholder: 'ग्राहक का नाम दर्ज करें',
+    customerPhone: 'फ़ोन',
+    customerPhonePlaceholder: 'फ़ोन नंबर दर्ज करें',
+    customerAddress: 'पता',
+    customerAddressPlaceholder: 'पता दर्ज करें',
+    invoiceNumber: 'इनवॉइस नंबर',
+    invoiceDate: 'इनवॉइस तिथि',
+    items: 'आइटम',
+    addItem: 'आइटम जोड़ें',
+    itemName: 'आइटम का नाम',
+    itemNamePlaceholder: 'आइटम का नाम दर्ज करें',
+    quantity: 'मात्रा',
+    rate: 'दर',
+    gst: 'GST %',
+    amount: 'राशि',
+    subtotal: 'उप-कुल',
+    gstAmount: 'GST राशि',
+    total: 'कुल',
+    notes: 'नोट्स',
+    notesPlaceholder: 'नोट्स जोड़ें (वैकल्पिक)',
+    preview: 'पूर्वावलोकन',
+    previewInvoice: 'इनवॉइस पूर्वावलोकन',
+    saveClose: 'सहेजें और बंद करें',
+    share: 'शेयर करें',
+    download: 'PDF डाउनलोड करें',
+    deleteItem: 'आइटम हटाएं',
+    confirmDelete: 'इस आइटम को हटाएं?',
+    errorGenerate: 'इनवॉइस नहीं बन सका। कृपया पुनः प्रयास करें।',
+    invoiceSaved: 'इनवॉइस सहेजा गया।',
+    duplicateInvoice: 'इनवॉइस नंबर पहले से मौजूद है।',
+  },
+
+  // Invoice History
+  invoiceHistory: {
+    title: 'इनवॉइस इतिहास',
+    empty: 'अभी तक कोई इनवॉइस नहीं',
+    emptySubtitle: 'शुरू करने के लिए अपना पहला इनवॉइस बनाएं',
+    deleteConfirm: 'इनवॉइस हटाएं',
+    deleteMessage: 'क्या आप वाकई इस इनवॉइस को हटाना चाहते हैं?',
+    invoiceNumber: 'इनवॉइस #',
+    date: 'तिथि',
+    customer: 'ग्राहक',
+    amount: 'राशि',
+  },
+
+  // GST Calculator
+  gstCalculator: {
+    title: 'GST कैलकुलेटर',
+    amount: 'राशि',
+    amountPlaceholder: 'राशि दर्ज करें',
+    gstRate: 'GST दर',
+    calculate: 'गणना करें',
+    baseAmount: 'मूल राशि',
+    gstAmount: 'GST राशि',
+    totalAmount: 'कुल राशि',
+    inclusive: 'GST सम्मिलित',
+    exclusive: 'GST अतिरिक्त',
+    reset: 'रीसेट',
+  },
+
+  // Alerts
+  alerts: {
+    deleteTitle: 'हटाएं',
+    deleteMessage: 'क्या आप वाकई इसे हटाना चाहते हैं?',
+    unsavedChanges: 'असहेजे परिवर्तन',
+    unsavedMessage: 'आपके पास असहेजे परिवर्तन हैं। क्या आप वापस जाना चाहते हैं?',
+    errorTitle: 'त्रुटि',
+    successTitle: 'सफलता',
+  },
+};
