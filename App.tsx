@@ -128,6 +128,8 @@ function AppContent() {
       <View style={[styles.screen, show('home')]}>
         <HomeScreen
           businessName={businessName}
+          invoiceCount={savedInvoices.length}
+          totalAmount={savedInvoices.reduce((sum, inv) => sum + (inv.grandTotal ?? 0), 0)}
           onGSTCalculator={() => setCurrentScreen('gstCalculator')}
           onCreateInvoice={() => setCurrentScreen('createInvoice')}
           onHistory={() => setCurrentScreen('invoiceHistory')}

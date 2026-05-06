@@ -15,6 +15,8 @@ import { styles } from './HomeScreen.styles';
 
 interface HomeScreenProps {
   businessName?: string;
+  invoiceCount?: number;
+  totalAmount?: number;
   onCreateInvoice?: () => void;
   onGSTCalculator?: () => void;
   onHistory?: () => void;
@@ -24,6 +26,8 @@ interface HomeScreenProps {
 
 export function HomeScreen({
   businessName,
+  invoiceCount = 0,
+  totalAmount = 0,
   onCreateInvoice,
   onGSTCalculator,
   onHistory,
@@ -55,12 +59,17 @@ export function HomeScreen({
         <View style={styles.statsCardWrapper}>
           <View style={styles.statsCard}>
             <View style={styles.statItem}>
-              <Text style={styles.statValue}>0</Text>
+              <Text style={styles.statValue}>{invoiceCount}</Text>
               <Text style={styles.statLabel}>{t.home.invoiceHistory}</Text>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.statItem}>
-              <Text style={styles.statValue}>₹0</Text>
+              <Text style={styles.statValue}>
+                ₹{totalAmount.toLocaleString('en-IN', {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </Text>
               <Text style={styles.statLabel}>{t.invoice.amount}</Text>
             </View>
           </View>

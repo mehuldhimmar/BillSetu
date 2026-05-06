@@ -241,13 +241,13 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
   }, [prefixDraft, persist, t]);
 
   const handlePrivacyPolicy = useCallback(() => {
-    Linking.openURL('https://billsetu.app/privacy-policy').catch(() =>
+    Linking.openURL('https://mehuldhimmar.github.io/BillSetu/PrivacyPolicy.html').catch(() =>
       showAlert({ title: t.alerts.errorTitle, message: t.settings.errorLink }),
     );
   }, [t]);
 
   const handleTerms = useCallback(() => {
-    Linking.openURL('https://billsetu.app/terms').catch(() =>
+    Linking.openURL('https://mehuldhimmar.github.io/BillSetu/Terms.html').catch(() =>
       showAlert({ title: t.alerts.errorTitle, message: t.settings.errorLink }),
     );
   }, [t]);
