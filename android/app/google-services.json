@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "894599010931",
+    "project_id": "billsetu-2a853",
+    "storage_bucket": "billsetu-2a853.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894599010931:android:60b04d9df5683acaa3a806",
+        "android_client_info": {
+          "package_name": "com.billsetu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJCMICoHz3tq2-263OGzjdcZMoYjR-Uc8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -153,4 +153,11 @@ export const hi: Translations = {
     errorTitle: 'त्रुटि',
     successTitle: 'सफलता',
   },
+
+  // No Internet
+  noInternet: {
+    title: 'इंटरनेट कनेक्शन नहीं है',
+    message: 'कृपया अपना Wi-Fi या मोबाइल डेटा जांचें और पुनः प्रयास करें।',
+    retry: 'पुनः प्रयास करें',
+  },
 };

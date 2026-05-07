@@ -151,6 +151,13 @@ export const en = {
     errorTitle: 'Error',
     successTitle: 'Success',
   },
+
+  // No Internet
+  noInternet: {
+    title: 'No Internet Connection',
+    message: 'Please check your Wi-Fi or mobile data and try again.',
+    retry: 'Retry',
+  },
 };
 
 export type Translations = typeof en;

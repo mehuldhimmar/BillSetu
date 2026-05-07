@@ -153,4 +153,11 @@ export const gu: Translations = {
     errorTitle: 'ભૂલ',
     successTitle: 'સફળ',
   },
+
+  // No Internet
+  noInternet: {
+    title: 'ઇન્ટરનેટ કનેક્શન નથી',
+    message: 'કૃપા કરીને તમારું Wi-Fi અથવા મોબાઇલ ડેટા તપાસો અને ફરી પ્રયાસ કરો.',
+    retry: 'ફરી પ્રયાસ કરો',
+  },
 };

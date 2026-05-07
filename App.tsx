@@ -22,6 +22,7 @@ import { BusinessProfileScreen } from './src/features/businessProfile/BusinessPr
 import { SettingsScreen } from './src/features/settings/SettingsScreen';
 import { LanguageSelectionScreen } from './src/features/language/LanguageSelectionScreen';
 import { AppAlertHost } from './src/shared/components/AppAlert';
+import { NoInternetDialog } from './src/shared/components/NoInternetDialog';
 import { AppLanguage } from './src/shared/utils/settingsStorage';
 
 type Screen =
@@ -223,6 +224,7 @@ function App() {
       <I18nProvider>
         <AppContent />
         <AppAlertHost />
+        <NoInternetDialog />
       </I18nProvider>
     </SafeAreaProvider>
   );

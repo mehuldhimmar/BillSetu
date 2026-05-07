@@ -7,6 +7,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import crashlytics from '@react-native-firebase/crashlytics';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '../../theme';
 import { useI18n } from '../../shared/i18n/I18nContext';
@@ -127,6 +128,26 @@ export function HomeScreen({
           </View>
 
         </View>
+
+        {/* ⚠️ TEMPORARY: Test Crash button — remove after verifying Crashlytics */}
+        <Pressable
+          style={{
+            marginTop: 32,
+            marginHorizontal: 24,
+            padding: 14,
+            backgroundColor: '#cc0000',
+            borderRadius: 8,
+            alignItems: 'center',
+          }}
+          onPress={() => crashlytics().crash()}
+          accessibilityRole="button"
+          accessibilityLabel="Test Crash"
+        >
+          <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 14 }}>
+            Test Crash (Remove after testing)
+          </Text>
+        </Pressable>
+
       </ScrollView>
     </View>
   );
