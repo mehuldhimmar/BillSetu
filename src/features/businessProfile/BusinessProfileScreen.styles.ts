@@ -96,7 +96,7 @@ export const styles = StyleSheet.create({
     backgroundColor: Colors.surface,
   },
   uploadLogoButtonPressed: {
-    backgroundColor: '#EFF6FF',
+    backgroundColor: Colors.selected.background,
   },
   uploadLogoText: {
     fontSize: 13,
@@ -152,7 +152,7 @@ export const styles = StyleSheet.create({
   },
   inputRowFocused: {
     borderColor: Colors.primary,
-    backgroundColor: '#EFF6FF',
+    backgroundColor: Colors.selected.background,
   },
   inputRowError: {
     borderColor: '#EF4444',

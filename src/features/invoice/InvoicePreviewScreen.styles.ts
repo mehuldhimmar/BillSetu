@@ -106,7 +106,7 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.md,
-    backgroundColor: '#EFF6FF',
+    backgroundColor: Colors.selected.background,
     borderBottomWidth: 1,
     borderBottomColor: Colors.border,
   },

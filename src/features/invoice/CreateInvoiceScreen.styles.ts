@@ -154,7 +154,7 @@ export const styles = StyleSheet.create<Styles>({
   },
   textInputFocused: {
     borderColor: Colors.primary,
-    backgroundColor: '#EFF6FF',
+    backgroundColor: Colors.selected.background,
   },
 
   // ── Date row ─────────────────────────────────────────────
@@ -402,7 +402,7 @@ export const styles = StyleSheet.create<Styles>({
   },
   sheetTextInputFocused: {
     borderColor: Colors.primary,
-    backgroundColor: '#EFF6FF',
+    backgroundColor: Colors.selected.background,
   },
   sheetRow: {
     flexDirection: 'row',
@@ -428,7 +428,7 @@ export const styles = StyleSheet.create<Styles>({
   },
   sheetRateChipSelected: {
     borderColor: Colors.primary,
-    backgroundColor: '#EFF6FF',
+    backgroundColor: Colors.selected.background,
   },
   sheetRateChipText: {
     fontSize: 13,

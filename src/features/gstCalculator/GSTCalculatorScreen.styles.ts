@@ -77,7 +77,7 @@ export const styles = StyleSheet.create({
   },
   amountInputRowFocused: {
     borderColor: Colors.primary,
-    backgroundColor: '#EFF6FF',
+    backgroundColor: Colors.selected.background,
   },
   currencySymbol: {
     fontSize: 20,
@@ -110,7 +110,7 @@ export const styles = StyleSheet.create({
   },
   rateChipSelected: {
     borderColor: Colors.primary,
-    backgroundColor: '#EFF6FF',
+    backgroundColor: Colors.selected.background,
   },
   rateChipText: {
     fontSize: 13,

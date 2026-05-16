@@ -50,7 +50,7 @@ function buildHTML(invoice: InvoiceData): string {
     body { font-family: Arial, sans-serif; font-size: 18px; color: #1E293B; background: #fff; }
 
     /* Header */
-    .header { background: #2563EB; padding: 24px 28px; display: flex; justify-content: space-between; align-items: center; }
+    .header { background: linear-gradient(135deg, #2563EB, #5B8CFF); padding: 24px 28px; display: flex; justify-content: space-between; align-items: center; }
     .header-left .title { font-size: 31px; font-weight: 800; color: #fff; letter-spacing: 1px; }
     .header-left .subtitle { font-size: 17px; color: rgba(255,255,255,0.7); margin-top: 2px; }
     .logo { width: 52px; height: 52px; background: rgba(255,255,255,0.2); border-radius: 12px;

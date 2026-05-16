@@ -124,7 +124,7 @@ export const styles = StyleSheet.create<Styles>({
     paddingBottom: Spacing.md,
   },
   rowBadge: {
-    backgroundColor: '#EFF6FF',
+    backgroundColor: Colors.selected.background,
     borderRadius: 8,
     paddingHorizontal: Spacing.sm,
     paddingVertical: 4,
@@ -191,7 +191,7 @@ export const styles = StyleSheet.create<Styles>({
     borderRightColor: Colors.border,
   },
   rowViewBtnPressed: {
-    backgroundColor: '#EFF6FF',
+    backgroundColor: Colors.selected.background,
   },
   rowViewBtnIcon: {
     width: 18,
