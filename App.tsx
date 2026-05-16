@@ -11,6 +11,7 @@ import {
   hasSelectedLanguage,
   markLanguageSelected,
 } from './src/shared/utils/settingsStorage';
+import { loadInvoices, saveInvoices } from './src/shared/utils/invoiceStorage';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { I18nProvider, useI18n } from './src/shared/i18n/I18nContext';
 import { HomeScreen } from './src/features/dashboard/HomeScreen';
@@ -60,18 +61,20 @@ function AppContent() {
    */
   const [appState, setAppState] = useState<'loading' | 'language' | 'ready'>('loading');
 
-  // Load settings + business name + first-launch flag on mount
+  // Load settings + business name + invoices + first-launch flag on mount
   useEffect(() => {
     Promise.all([
       loadSettings(),
       loadBusinessProfile(),
       hasSelectedLanguage(),
-    ]).then(([settings, profile, languageChosen]) => {
+      loadInvoices(),
+    ]).then(([settings, profile, languageChosen, invoices]) => {
       setInvoicePrefix(settings.invoicePrefix);
       if (profile?.businessName) {
         setBusinessName(profile.businessName);
       }
       setBusinessProfile(profile);
+      setSavedInvoices(invoices);
       setAppState(languageChosen ? 'ready' : 'language');
     });
   }, []);
@@ -124,7 +127,10 @@ function AppContent() {
     setSavedInvoices(prev => {
       // Avoid duplicates if user taps Save & Close twice
       const alreadySaved = prev.some(i => i.invoiceNumber === invoice.invoiceNumber);
-      return alreadySaved ? prev : [stored, ...prev];
+      if (alreadySaved) { return prev; }
+      const updated = [stored, ...prev];
+      saveInvoices(updated); // persist to AsyncStorage
+      return updated;
     });
     // Reset the create screen so the next invoice starts fresh
     setCreateInvoiceKey(k => k + 1);
@@ -207,7 +213,11 @@ function AppContent() {
               setCurrentScreen('invoicePreview');
             }}
             onDeleteInvoice={id => {
-              setSavedInvoices(prev => prev.filter(inv => inv.id !== id));
+              setSavedInvoices(prev => {
+                const updated = prev.filter(inv => inv.id !== id);
+                saveInvoices(updated); // persist deletion to AsyncStorage
+                return updated;
+              });
             }}
           />
         </View>
