@@ -21,6 +21,7 @@ import { InvoicePreviewScreen } from './src/features/invoice/InvoicePreviewScree
 import { InvoiceHistoryScreen, StoredInvoice } from './src/features/invoice/InvoiceHistoryScreen';
 import { BusinessProfileScreen } from './src/features/businessProfile/BusinessProfileScreen';
 import { SettingsScreen } from './src/features/settings/SettingsScreen';
+import { WebViewScreen } from './src/features/webView/WebViewScreen';
 import { LanguageSelectionScreen } from './src/features/language/LanguageSelectionScreen';
 import { AppAlertHost, showAlert } from './src/shared/components/AppAlert';
 import { NoInternetDialog } from './src/shared/components/NoInternetDialog';
@@ -43,7 +44,8 @@ type Screen =
   | 'invoicePreview'
   | 'invoiceHistory'
   | 'businessProfile'
-  | 'settings';
+  | 'settings'
+  | 'webView';
 
 /** Where the invoice preview was navigated from */
 type PreviewSource = 'createInvoice' | 'invoiceHistory';
@@ -62,6 +64,7 @@ function AppContent() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('home');
   const [currentInvoice, setCurrentInvoice] = useState<InvoiceData | null>(null);
   const [previewSource, setPreviewSource] = useState<PreviewSource>('createInvoice');
+  const [webViewConfig, setWebViewConfig] = useState<{ title: string; url: string } | null>(null);
   const [savedInvoices, setSavedInvoices] = useState<StoredInvoice[]>([]);
   // Incrementing this key forces CreateInvoiceScreen to remount (fresh state) after a save
   const [createInvoiceKey, setCreateInvoiceKey] = useState(0);
@@ -130,6 +133,12 @@ function AppContent() {
       setBusinessProfile(profile);
     });
     setCurrentScreen('home');
+  }, []);
+
+  /** Open a URL inside the in-app WebView */
+  const handleOpenWebView = useCallback((title: string, url: string) => {
+    setWebViewConfig({ title, url });
+    setCurrentScreen('webView');
   }, []);
 
   /** Called when user taps Continue on the language selection screen */
@@ -302,8 +311,30 @@ function AppContent() {
             });
             setCurrentScreen('home');
           }}
+          onOpenPrivacyPolicy={() =>
+            handleOpenWebView(
+              'Privacy Policy',
+              'https://mehuldhimmar.github.io/BillSetu/PrivacyPolicy.html',
+            )
+          }
+          onOpenTerms={() =>
+            handleOpenWebView(
+              'Terms & Conditions',
+              'https://mehuldhimmar.github.io/BillSetu/Terms.html',
+            )
+          }
         />
       </View>
+
+      {currentScreen === 'webView' && webViewConfig && (
+        <View style={styles.screen}>
+          <WebViewScreen
+            title={webViewConfig.title}
+            url={webViewConfig.url}
+            onBack={() => setCurrentScreen('settings')}
+          />
+        </View>
+      )}
 
     </View>
   );

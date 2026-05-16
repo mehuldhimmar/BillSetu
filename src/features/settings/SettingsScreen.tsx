@@ -163,9 +163,11 @@ function SettingsRow({
 interface SettingsScreenProps {
   isVisible?: boolean;
   onBack?: () => void;
+  onOpenPrivacyPolicy?: () => void;
+  onOpenTerms?: () => void;
 }
 
-export function SettingsScreen({ isVisible = false, onBack }: SettingsScreenProps) {
+export function SettingsScreen({ isVisible = false, onBack, onOpenPrivacyPolicy, onOpenTerms }: SettingsScreenProps) {
   const insets = useSafeAreaInsets();
   const { t, setLanguage } = useI18n();
 
@@ -246,16 +248,12 @@ export function SettingsScreen({ isVisible = false, onBack }: SettingsScreenProp
   }, [prefixDraft, persist, t]);
 
   const handlePrivacyPolicy = useCallback(() => {
-    Linking.openURL('https://mehuldhimmar.github.io/BillSetu/PrivacyPolicy.html').catch(() =>
-      showAlert({ title: t.alerts.errorTitle, message: t.settings.errorLink }),
-    );
-  }, [t]);
+    onOpenPrivacyPolicy?.();
+  }, [onOpenPrivacyPolicy]);
 
   const handleTerms = useCallback(() => {
-    Linking.openURL('https://mehuldhimmar.github.io/BillSetu/Terms.html').catch(() =>
-      showAlert({ title: t.alerts.errorTitle, message: t.settings.errorLink }),
-    );
-  }, [t]);
+    onOpenTerms?.();
+  }, [onOpenTerms]);
 
   const handleRateUs = useCallback(() => {
     // Deep-link to Play Store / App Store listing
