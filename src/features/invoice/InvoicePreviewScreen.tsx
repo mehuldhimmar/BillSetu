@@ -17,6 +17,7 @@ import { generateInvoicePDF } from '../../shared/utils/generateInvoicePDF';
 import { PDFViewerModal } from '../../shared/components/PDFViewerModal';
 import { showAlert } from '../../shared/components/AppAlert';
 import { styles } from './InvoicePreviewScreen.styles';
+import { BusinessProfile } from '../../shared/utils/businessProfileStorage';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -45,6 +46,7 @@ type PreviewMode = 'create' | 'history';
 
 interface InvoicePreviewScreenProps {
   invoice: InvoiceData;
+  businessProfile?: BusinessProfile | null;
   mode?: PreviewMode;
   onBack?: () => void;
   onEdit?: () => void;
@@ -54,6 +56,7 @@ interface InvoicePreviewScreenProps {
 
 export function InvoicePreviewScreen({
   invoice,
+  businessProfile = null,
   mode = 'create',
   onBack,
   onEdit,
@@ -83,7 +86,7 @@ export function InvoicePreviewScreen({
     if (pdfLoading) { return; }
     setPdfLoading(true);
     try {
-      const { filePath } = await generateInvoicePDF(invoice);
+      const { filePath } = await generateInvoicePDF(invoice, businessProfile);
       setPdfPath(filePath);
       onGeneratePDF?.(invoice);
     } catch {
@@ -125,40 +128,61 @@ export function InvoicePreviewScreen({
 
           {/* ── Blue header band ── */}
           <View style={styles.invoiceHeader}>
-            <View style={styles.invoiceHeaderLeft}>
-              <Text style={styles.invoiceTitle}>INVOICE</Text>
-              <Text style={styles.invoiceSubtitle}>BillSetu</Text>
-            </View>
-            <View style={styles.logoPlaceholder}>
-              <Image source={require('../../images/invoice.png')} style={styles.logoImage} resizeMode="contain" accessibilityElementsHidden />
-            </View>
-          </View>
-
-          {/* ── Invoice no + date meta ── */}
-          <View style={styles.metaRow}>
-            <View style={styles.metaBlock}>
-              <Text style={styles.metaLabel}>{t.invoiceHistory.invoiceNumber}</Text>
-              <Text style={styles.metaValue}>{invoice.invoiceNumber}</Text>
-            </View>
-            <View style={[styles.metaBlock, { alignItems: 'flex-end' }]}>
-              <Text style={styles.metaLabel}>{t.invoiceHistory.date}</Text>
-              <Text style={styles.metaValue}>{invoice.date}</Text>
+            <Text style={styles.invoiceSubtitle}>
+              {businessProfile?.businessName || 'BillSetu'}
+            </Text>
+            <View style={styles.invoiceHeaderMeta}>
+              <View style={styles.invoiceHeaderMetaBlock}>
+                <Text style={styles.invoiceHeaderMetaLabel}>{t.invoiceHistory.invoiceNumber}</Text>
+                <Text style={styles.invoiceHeaderMetaValue}>{invoice.invoiceNumber}</Text>
+              </View>
+              <View style={[styles.invoiceHeaderMetaBlock, { alignItems: 'flex-end' }]}>
+                <Text style={styles.invoiceHeaderMetaLabel}>{t.invoiceHistory.date}</Text>
+                <Text style={styles.invoiceHeaderMetaValue}>{invoice.date}</Text>
+              </View>
             </View>
           </View>
 
-          {/* ── Bill To ── */}
-          <View style={styles.billToSection}>
-            <Text style={styles.billToLabel}>{t.invoice.billTo}</Text>
-            {invoice.customerName ? (
-              <>
-                <Text style={styles.billToName}>{invoice.customerName}</Text>
-                {invoice.customerPhone ? (
-                  <Text style={styles.billToPhone}>{invoice.customerPhone}</Text>
-                ) : null}
-              </>
-            ) : (
-              <Text style={styles.billToEmpty}>{t.invoiceHistory.empty}</Text>
-            )}
+          {/* ── Bill From / Bill To ── */}
+          <View style={styles.billRow}>
+            {/* Bill From */}
+            <View style={styles.billCol}>
+              <Text style={styles.billColLabel}>{t.invoice.billFrom}</Text>
+              {businessProfile?.businessName ? (
+                <>
+                  <Text style={styles.billColName}>{businessProfile.businessName}</Text>
+                  {!!businessProfile.address && (
+                    <Text style={styles.billColDetail}>{businessProfile.address}</Text>
+                  )}
+                  {!!businessProfile.phone && (
+                    <Text style={styles.billColDetail}>{businessProfile.phone}</Text>
+                  )}
+                  {!!businessProfile.gstin && (
+                    <Text style={styles.billColDetail}>GSTIN: {businessProfile.gstin}</Text>
+                  )}
+                </>
+              ) : (
+                <Text style={styles.billColEmpty}>{t.invoice.billFromEmpty}</Text>
+              )}
+            </View>
+
+            {/* Vertical divider */}
+            <View style={styles.billColDivider} />
+
+            {/* Bill To */}
+            <View style={styles.billCol}>
+              <Text style={styles.billColLabel}>{t.invoice.billTo}</Text>
+              {invoice.customerName ? (
+                <>
+                  <Text style={styles.billColName}>{invoice.customerName}</Text>
+                  {!!invoice.customerPhone && (
+                    <Text style={styles.billColDetail}>{invoice.customerPhone}</Text>
+                  )}
+                </>
+              ) : (
+                <Text style={styles.billColEmpty}>{t.invoice.noCustomer}</Text>
+              )}
+            </View>
           </View>
 
           <View style={styles.sectionDivider} />

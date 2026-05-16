@@ -158,10 +158,11 @@ function SettingsRow({
 // ── Main Screen ───────────────────────────────────────────────────────────────
 
 interface SettingsScreenProps {
+  isVisible?: boolean;
   onBack?: () => void;
 }
 
-export function SettingsScreen({ onBack }: SettingsScreenProps) {
+export function SettingsScreen({ isVisible = false, onBack }: SettingsScreenProps) {
   const insets = useSafeAreaInsets();
   const { t, setLanguage } = useI18n();
 
@@ -176,15 +177,16 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
   const [prefixDraft, setPrefixDraft] = useState('');
   const [prefixFocused, setPrefixFocused] = useState(false);
 
-  // ── Load on mount ────────────────────────────────────────
+  // ── Load settings whenever screen becomes visible ────────
   useEffect(() => {
+    if (!isVisible) { return; }
     (async () => {
       const saved = await loadSettings();
       setSettings(saved);
       setPrefixDraft(saved.invoicePrefix);
       setIsLoading(false);
     })();
-  }, []);
+  }, [isVisible]);
 
   // ── Android back ─────────────────────────────────────────
   useEffect(() => {
@@ -276,8 +278,6 @@ export function SettingsScreen({ onBack }: SettingsScreenProps) {
   // ── Language display label ───────────────────────────────
   const languageLabel =
     SUPPORTED_LANGUAGES.find(l => l.code === settings.language)?.nativeLabel ?? 'English';
-
-  if (isLoading) { return null; }
 
   return (
     <View style={[styles.root, { paddingTop: insets.top }]}>

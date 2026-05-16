@@ -185,7 +185,18 @@ export const styles = StyleSheet.create({
     marginRight: 2,
   },
 
-  // ── Error text ───────────────────────────────────────────
+  inputRowLocked: {
+    borderColor: Colors.border,
+    backgroundColor: Colors.backgroundSecondary,
+    opacity: 0.75,
+  },
+  lockedHint: {
+    fontSize: 11,
+    fontWeight: '500',
+    color: Colors.text.hint,
+    marginTop: 4,
+    marginLeft: 2,
+  },
   errorText: {
     fontSize: 12,
     fontWeight: '500',

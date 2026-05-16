@@ -1,12 +1,7 @@
 import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import { Colors, Spacing } from '../../theme';
 
-// Explicit type ensures TS picks up all keys immediately
-type Styles = {
-  [key: string]: ViewStyle | TextStyle;
-};
-
-export const styles = StyleSheet.create<Styles>({
+export const styles = StyleSheet.create({
 
   // ── Root ─────────────────────────────────────────────────
   root: {
@@ -155,6 +150,16 @@ export const styles = StyleSheet.create<Styles>({
   textInputFocused: {
     borderColor: Colors.primary,
     backgroundColor: Colors.selected.background,
+  },
+  textInputError: {
+    borderColor: '#EF4444',
+    backgroundColor: '#FFF5F5',
+  },
+  inputError: {
+    fontSize: 11,
+    fontWeight: '500',
+    color: '#EF4444',
+    marginTop: 4,
   },
 
   // ── Date row ─────────────────────────────────────────────

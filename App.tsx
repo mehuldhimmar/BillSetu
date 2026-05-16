@@ -3,8 +3,8 @@
  */
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { loadBusinessProfile } from './src/shared/utils/businessProfileStorage';
+import { BackHandler, View, StyleSheet } from 'react-native';
+import { BusinessProfile, loadBusinessProfile } from './src/shared/utils/businessProfileStorage';
 import {
   DEFAULT_SETTINGS,
   loadSettings,
@@ -21,7 +21,7 @@ import { InvoiceHistoryScreen, StoredInvoice } from './src/features/invoice/Invo
 import { BusinessProfileScreen } from './src/features/businessProfile/BusinessProfileScreen';
 import { SettingsScreen } from './src/features/settings/SettingsScreen';
 import { LanguageSelectionScreen } from './src/features/language/LanguageSelectionScreen';
-import { AppAlertHost } from './src/shared/components/AppAlert';
+import { AppAlertHost, showAlert } from './src/shared/components/AppAlert';
 import { NoInternetDialog } from './src/shared/components/NoInternetDialog';
 import { AppLanguage } from './src/shared/utils/settingsStorage';
 
@@ -49,6 +49,7 @@ function AppContent() {
   // Incrementing this key forces CreateInvoiceScreen to remount (fresh state) after a save
   const [createInvoiceKey, setCreateInvoiceKey] = useState(0);
   const [businessName, setBusinessName] = useState<string>('');
+  const [businessProfile, setBusinessProfile] = useState<BusinessProfile | null>(null);
   const [invoicePrefix, setInvoicePrefix] = useState(DEFAULT_SETTINGS.invoicePrefix);
 
   /**
@@ -70,14 +71,35 @@ function AppContent() {
       if (profile?.businessName) {
         setBusinessName(profile.businessName);
       }
+      setBusinessProfile(profile);
       setAppState(languageChosen ? 'ready' : 'language');
     });
   }, []);
+
+  // Handle Android hardware back button on the home screen — show exit confirmation
+  useEffect(() => {
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (currentScreen === 'home') {
+        showAlert({
+          title: 'Exit App',
+          message: 'Are you sure you want to exit BillSetu?',
+          buttons: [
+            { text: 'Cancel', style: 'cancel' },
+            { text: 'Exit', style: 'destructive', onPress: () => BackHandler.exitApp() },
+          ],
+        });
+        return true; // prevent default back behaviour
+      }
+      return false; // let other screens handle their own back press
+    });
+    return () => subscription.remove();
+  }, [currentScreen]);
 
   // Refresh business name whenever user returns from Business Profile screen
   const handleBusinessProfileBack = useCallback(() => {
     loadBusinessProfile().then(profile => {
       setBusinessName(profile?.businessName ?? '');
+      setBusinessProfile(profile);
     });
     setCurrentScreen('home');
   }, []);
@@ -141,6 +163,7 @@ function AppContent() {
 
       <View style={[styles.screen, show('gstCalculator')]}>
         <GSTCalculatorScreen
+          isVisible={currentScreen === 'gstCalculator'}
           onBack={() => setCurrentScreen('home')}
         />
       </View>
@@ -164,6 +187,7 @@ function AppContent() {
         <View style={styles.screen}>
           <InvoicePreviewScreen
             invoice={currentInvoice}
+            businessProfile={businessProfile}
             mode={previewSource === 'invoiceHistory' ? 'history' : 'create'}
             onBack={() => setCurrentScreen(previewSource)}
             onEdit={() => setCurrentScreen('createInvoice')}
@@ -197,20 +221,19 @@ function AppContent() {
         </View>
       )}
 
-      {currentScreen === 'settings' && (
-        <View style={styles.screen}>
-          <SettingsScreen
-            onBack={() => {
-              // Refresh prefix and force CreateInvoiceScreen remount so next invoice uses updated prefix
-              loadSettings().then(s => {
-                setInvoicePrefix(s.invoicePrefix);
-                setCreateInvoiceKey(k => k + 1);
-              });
-              setCurrentScreen('home');
-            }}
-          />
-        </View>
-      )}
+      <View style={[styles.screen, show('settings')]}>
+        <SettingsScreen
+          isVisible={currentScreen === 'settings'}
+          onBack={() => {
+            // Refresh prefix and force CreateInvoiceScreen remount so next invoice uses updated prefix
+            loadSettings().then(s => {
+              setInvoicePrefix(s.invoicePrefix);
+              setCreateInvoiceKey(k => k + 1);
+            });
+            setCurrentScreen('home');
+          }}
+        />
+      </View>
 
     </View>
   );

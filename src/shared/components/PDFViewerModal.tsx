@@ -18,6 +18,7 @@ import Share from 'react-native-share';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import { Colors, Spacing } from '../../theme';
 import { showAlert } from './AppAlert';
+import { useI18n } from '../i18n/I18nContext';
 
 interface PDFViewerModalProps {
   visible: boolean;
@@ -33,6 +34,7 @@ export function PDFViewerModal({
   onClose,
 }: PDFViewerModalProps) {
   const insets = useSafeAreaInsets();
+  const { t } = useI18n();
   const screenWidth = Dimensions.get('window').width;
   const pdfHeight = screenWidth * 1.4142; // standard A4 aspect ratio
 
@@ -84,9 +86,9 @@ export function PDFViewerModal({
             style={styles.cancelButton}
             onPress={onClose}
             accessibilityRole="button"
-            accessibilityLabel="Close PDF preview"
+            accessibilityLabel={t.common.close}
           >
-            <Text style={styles.cancelText}>Cancel  ✕</Text>
+            <Text style={styles.cancelText}>{t.common.cancel}  ✕</Text>
           </Pressable>
         </View>
 
@@ -101,7 +103,7 @@ export function PDFViewerModal({
             renderActivityIndicator={() => (
               <View style={styles.loader}>
                 <ActivityIndicator size="large" color={Colors.primary} />
-                <Text style={styles.loaderText}>Loading PDF…</Text>
+                <Text style={styles.loaderText}>{t.invoice.loadingPdf}</Text>
               </View>
             )}
           />
@@ -113,10 +115,10 @@ export function PDFViewerModal({
             style={({ pressed }) => [styles.footerShare, pressed && styles.footerSharePressed]}
             onPress={handleShare}
             accessibilityRole="button"
-            accessibilityLabel="Share invoice PDF"
+            accessibilityLabel={t.invoice.shareInvoice}
           >
             <Image source={require('../../images/share.png')} style={styles.footerShareIcon} resizeMode="contain" accessibilityElementsHidden />
-            <Text style={styles.footerShareText}>Share Invoice</Text>
+            <Text style={styles.footerShareText}>{t.invoice.shareInvoice}</Text>
           </Pressable>
         </View>
       </View>

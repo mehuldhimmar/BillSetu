@@ -251,7 +251,8 @@ export function BusinessProfileScreen({ onBack }: BusinessProfileScreenProps) {
               <View
                 style={[
                   styles.inputRow,
-                  focusedField === 'businessName' && styles.inputRowFocused,
+                  focusedField === 'businessName' && !savedOnce && styles.inputRowFocused,
+                  savedOnce && styles.inputRowLocked,
                 ]}
               >
                 <TextInput
@@ -267,8 +268,12 @@ export function BusinessProfileScreen({ onBack }: BusinessProfileScreenProps) {
                   autoCapitalize="words"
                   maxLength={80}
                   accessibilityLabel={t.businessProfile.businessName}
+                  editable={!savedOnce}
                 />
               </View>
+              {savedOnce && (
+                <Text style={styles.lockedHint}>🔒 {t.businessProfile.businessNameLocked}</Text>
+              )}
             </View>
 
             <View style={styles.fieldDivider} />

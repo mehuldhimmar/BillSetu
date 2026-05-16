@@ -87,7 +87,7 @@ const InvoiceRow = React.memo(function InvoiceRow({
   }, [scaleAnim]);
 
   const itemCount = invoice.items.length;
-  const customerLabel = invoice.customerName.trim() || 'No customer';
+  const customerLabel = invoice.customerName.trim() || t.invoice.noCustomer;
 
   return (
     <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
@@ -108,7 +108,7 @@ const InvoiceRow = React.memo(function InvoiceRow({
               {customerLabel}
             </Text>
             <Text style={styles.rowItemCount}>
-              {itemCount} {itemCount === 1 ? 'item' : 'items'}
+              {itemCount} {itemCount === 1 ? t.invoice.itemCount_one : t.invoice.itemCount_other}
             </Text>
           </View>
           <View style={styles.rowAmountBlock}>
@@ -160,11 +160,11 @@ function EmptyState({ isFiltered }: { isFiltered: boolean }) {
         accessibilityElementsHidden
       />
       <Text style={styles.emptyTitle}>
-        {isFiltered ? 'No results found' : t.invoiceHistory.empty}
+        {isFiltered ? t.invoiceHistory.noResults : t.invoiceHistory.empty}
       </Text>
       <Text style={styles.emptySubtitle}>
         {isFiltered
-          ? 'Try a different search term'
+          ? t.invoiceHistory.noResultsSubtitle
           : t.invoiceHistory.emptySubtitle}
       </Text>
     </View>
@@ -221,7 +221,7 @@ export function InvoiceHistoryScreen({
     (invoice: StoredInvoice) => {
       showAlert({
         title: t.invoiceHistory.deleteConfirm,
-        message: `${t.common.delete} ${invoice.invoiceNumber}? This cannot be undone.`,
+        message: `${t.common.delete} ${invoice.invoiceNumber}? ${t.invoiceHistory.deleteCannotUndo}`,
         buttons: [
           { text: t.common.cancel, style: 'cancel' },
           {
@@ -252,11 +252,11 @@ export function InvoiceHistoryScreen({
     () => (
       <View style={styles.listHeader}>
         <Text style={styles.listHeaderCount}>
-          {filtered.length} {filtered.length === 1 ? 'invoice' : 'invoices'}
+          {filtered.length} {filtered.length === 1 ? t.invoiceHistory.invoiceCount_one : t.invoiceHistory.invoiceCount_other}
         </Text>
       </View>
     ),
-    [filtered.length],
+    [filtered.length, t],
   );
 
   return (
@@ -284,7 +284,7 @@ export function InvoiceHistoryScreen({
             style={styles.searchInput}
             value={searchQuery}
             onChangeText={setSearchQuery}
-            placeholder="Search by invoice no. or customer…"
+            placeholder={t.invoiceHistory.searchPlaceholder}
             placeholderTextColor={Colors.text.hint}
             returnKeyType="search"
             clearButtonMode="while-editing"

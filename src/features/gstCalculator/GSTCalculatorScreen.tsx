@@ -79,12 +79,12 @@ function formatCurrency(value: number): string {
 
 interface GSTCalculatorScreenProps {
   onBack?: () => void;
-  onUseInInvoice?: (result: GSTResult, gstPercent: number) => void;
+  isVisible?: boolean;
 }
 
 export function GSTCalculatorScreen({
   onBack,
-  onUseInInvoice,
+  isVisible = false,
 }: GSTCalculatorScreenProps) {
   const [amountText, setAmountText] = useState('');
   const [selectedRate, setSelectedRate] = useState<GSTRate>(18);
@@ -94,6 +94,17 @@ export function GSTCalculatorScreen({
   const { t } = useI18n();
 
   const customInputRef = useRef<TextInput>(null);
+  const amountInputRef = useRef<TextInput>(null);
+
+  // Focus the amount field only when this screen becomes visible
+  useEffect(() => {
+    if (isVisible) {
+      const timer = setTimeout(() => amountInputRef.current?.focus(), 100);
+      return () => clearTimeout(timer);
+    } else {
+      Keyboard.dismiss();
+    }
+  }, [isVisible]);
 
   const activeGSTPercent = useMemo<number>(() => {
     if (selectedRate === 'custom') {
@@ -129,11 +140,6 @@ export function GSTCalculatorScreen({
     const sanitised = text.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
     setCustomRateText(sanitised);
   }, []);
-
-  const handleUseInInvoice = useCallback(() => {
-    Keyboard.dismiss();
-    onUseInInvoice?.(result, activeGSTPercent);
-  }, [onUseInInvoice, result, activeGSTPercent]);
 
   const insets = useSafeAreaInsets();
 
@@ -180,6 +186,7 @@ export function GSTCalculatorScreen({
           >
             <Text style={styles.currencySymbol}>₹</Text>
             <TextInput
+              ref={amountInputRef}
               style={styles.amountInput}
               value={amountText}
               onChangeText={handleAmountChange}
@@ -191,7 +198,6 @@ export function GSTCalculatorScreen({
               onFocus={() => setAmountFocused(true)}
               onBlur={() => setAmountFocused(false)}
               accessibilityLabel={t.gstCalculator.amount}
-              autoFocus
             />
           </View>
         </View>
@@ -353,21 +359,7 @@ export function GSTCalculatorScreen({
           </View>
         </View>
 
-        {/* Use in Invoice */}
-        <Pressable
-          style={({ pressed }) => [
-            styles.primaryButton,
-            pressed && styles.primaryButtonPressed,
-          ]}
-          onPress={handleUseInInvoice}
-          disabled={!hasResult}
-          accessibilityRole="button"
-          accessibilityLabel={t.invoice.createTitle}
-          accessibilityState={{ disabled: !hasResult }}
-        >
-          <Image source={require('../../images/invoice.png')} style={styles.primaryButtonIcon} resizeMode="contain" accessibilityElementsHidden />
-          <Text style={styles.primaryButtonText}>{t.invoice.createTitle}</Text>
-        </Pressable>
+
 
       </View>
     </View>

@@ -65,65 +65,39 @@ export const styles = StyleSheet.create({
   invoiceHeader: {
     backgroundColor: Colors.primary,
     paddingHorizontal: Spacing.lg,
-    paddingVertical: Spacing.lg,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    paddingTop: Spacing.md,
+    paddingBottom: Spacing.md,
+    gap: Spacing.sm,
   },
-  invoiceHeaderLeft: {
-    flex: 1,
-    gap: 2,
-  },
-  invoiceTitle: {
-    fontSize: 22,
-    fontWeight: '800',
+  invoiceSubtitle: {
+    fontSize: 16,
+    fontWeight: '700',
     color: '#FFFFFF',
     letterSpacing: 0.3,
   },
-  invoiceSubtitle: {
-    fontSize: 12,
-    fontWeight: '500',
-    color: 'rgba(255,255,255,0.7)',
-  },
-  logoPlaceholder: {
-    width: 52,
-    height: 52,
-    borderRadius: 12,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  logoImage: {
-    width: 32,
-    height: 32,
-    tintColor: '#FFFFFF',
-  },
-
-  // ── Meta row (invoice no + date) ─────────────────────────
-  metaRow: {
+  invoiceHeaderMeta: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    paddingHorizontal: Spacing.lg,
-    paddingVertical: Spacing.md,
-    backgroundColor: Colors.selected.background,
-    borderBottomWidth: 1,
-    borderBottomColor: Colors.border,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.25)',
+    paddingTop: Spacing.sm,
+    marginTop: 2,
   },
-  metaBlock: {
+  invoiceHeaderMetaBlock: {
     gap: 2,
   },
-  metaLabel: {
+  invoiceHeaderMetaLabel: {
     fontSize: 10,
     fontWeight: '600',
-    color: Colors.text.hint,
+    color: 'rgba(255,255,255,0.65)',
     letterSpacing: 0.5,
     textTransform: 'uppercase',
   },
-  metaValue: {
+  invoiceHeaderMetaValue: {
     fontSize: 13,
     fontWeight: '700',
-    color: Colors.secondary,
+    color: '#FFFFFF',
   },
 
   // ── Section divider ──────────────────────────────────────
@@ -133,7 +107,47 @@ export const styles = StyleSheet.create({
     marginHorizontal: Spacing.lg,
   },
 
-  // ── Bill To ──────────────────────────────────────────────
+  // ── Bill From / Bill To (side by side) ──────────────────
+  billRow: {
+    flexDirection: 'row',
+    paddingHorizontal: Spacing.lg,
+    paddingVertical: Spacing.md,
+  },
+  billCol: {
+    flex: 1,
+    gap: 3,
+  },
+  billColDivider: {
+    width: 1,
+    backgroundColor: Colors.border,
+    marginHorizontal: Spacing.md,
+  },
+  billColLabel: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: Colors.text.hint,
+    letterSpacing: 0.6,
+    textTransform: 'uppercase',
+    marginBottom: 3,
+  },
+  billColName: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: Colors.secondary,
+  },
+  billColDetail: {
+    fontSize: 11,
+    fontWeight: '500',
+    color: Colors.text.secondary,
+  },
+  billColEmpty: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: Colors.text.hint,
+    fontStyle: 'italic',
+  },
+
+  // ── Bill To (kept for billToEmpty reuse) ─────────────────
   billToSection: {
     paddingHorizontal: Spacing.lg,
     paddingVertical: Spacing.md,

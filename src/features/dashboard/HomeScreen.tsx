@@ -100,7 +100,7 @@ export function HomeScreen({
 
           {/* Quick Actions */}
           <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Quick Actions</Text>
+            <Text style={styles.sectionTitle}>{t.home.quickActions}</Text>
           </View>
 
           <View style={styles.grid}>

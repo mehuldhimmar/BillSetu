@@ -1,11 +1,7 @@
-import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { ImageStyle, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 import { Colors, Spacing } from '../../theme';
 
-type Styles = {
-  [key: string]: ViewStyle | TextStyle;
-};
-
-export const styles = StyleSheet.create<Styles>({
+export const styles = StyleSheet.create({
 
   // ── Root ─────────────────────────────────────────────────
   root: {
@@ -50,7 +46,7 @@ export const styles = StyleSheet.create<Styles>({
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.15)',
+    backgroundColor: '#FFFFFF',
     borderRadius: 14,
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.sm + 2,
@@ -59,13 +55,12 @@ export const styles = StyleSheet.create<Styles>({
     borderColor: 'transparent',
   },
   searchBarFocused: {
-    backgroundColor: '#FFFFFF',
     borderColor: Colors.primary,
   },
   searchIcon: {
     width: 18,
     height: 18,
-    tintColor: 'rgba(255,255,255,0.7)',
+    tintColor: Colors.text.hint,
   },
   searchInput: {
     flex: 1,

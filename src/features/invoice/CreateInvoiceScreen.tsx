@@ -112,7 +112,22 @@ function AddItemSheet({ visible, bottomInset, editingItem, defaultGstRate, onClo
   const [priceFocused, setPriceFocused] = useState(false);
 
   const nameRef = useRef<TextInput>(null);
+  // Start fully off-screen so there's no flash before the first slide-in
+  const slideAnim = useRef(new Animated.Value(600)).current;
   const { t } = useI18n();
+
+  // Slide in when sheet becomes visible
+  useEffect(() => {
+    if (visible) {
+      slideAnim.setValue(600);
+      Animated.spring(slideAnim, {
+        toValue: 0,
+        useNativeDriver: true,
+        bounciness: 0,
+        speed: 20,
+      }).start();
+    }
+  }, [visible, slideAnim]);
 
   // Pre-fill fields when editing, reset when adding
   useEffect(() => {
@@ -134,8 +149,12 @@ function AddItemSheet({ visible, bottomInset, editingItem, defaultGstRate, onClo
 
   const handleClose = useCallback(() => {
     Keyboard.dismiss();
-    onClose();
-  }, [onClose]);
+    Animated.timing(slideAnim, {
+      toValue: 600,
+      duration: 220,
+      useNativeDriver: true,
+    }).start(() => onClose());
+  }, [onClose, slideAnim]);
 
   const handleSave = useCallback(() => {
     const trimmedName = name.trim();
@@ -145,9 +164,16 @@ function AddItemSheet({ visible, bottomInset, editingItem, defaultGstRate, onClo
       return;
     }
     Keyboard.dismiss();
-    onSave(computeItem(trimmedName, qty, price, gstRate));
-    onClose();
-  }, [name, qtyText, priceText, gstRate, onSave, onClose]);
+    const item = computeItem(trimmedName, qty, price, gstRate);
+    Animated.timing(slideAnim, {
+      toValue: 600,
+      duration: 220,
+      useNativeDriver: true,
+    }).start(() => {
+      onSave(item);
+      onClose();
+    });
+  }, [name, qtyText, priceText, gstRate, onSave, onClose, slideAnim]);
 
   const canSave =
     name.trim().length > 0 &&
@@ -159,7 +185,7 @@ function AddItemSheet({ visible, bottomInset, editingItem, defaultGstRate, onClo
     <Modal
       visible={visible}
       transparent
-      animationType="slide"
+      animationType="none"
       onRequestClose={handleClose}
       statusBarTranslucent
     >
@@ -170,8 +196,18 @@ function AddItemSheet({ visible, bottomInset, editingItem, defaultGstRate, onClo
         {/* Tap outside to dismiss */}
         <Pressable style={styles.modalDismissArea} onPress={handleClose} />
 
-        {/* Sheet sits directly above the keyboard — no manual offset needed */}
-        <View style={[styles.bottomSheet, { paddingBottom: bottomInset + 16 }]}>
+        {/* Animated sheet — slides up from bottom */}
+        <Animated.View
+          style={[
+            styles.bottomSheet,
+            { paddingBottom: bottomInset + 16 },
+            {
+              transform: [{
+                translateY: slideAnim,
+              }],
+            },
+          ]}
+        >
 
             {/* Handle */}
             <View style={styles.sheetHandle} />
@@ -277,7 +313,7 @@ function AddItemSheet({ visible, bottomInset, editingItem, defaultGstRate, onClo
               <Text style={styles.saveItemButtonText}>{editingItem ? t.common.edit : t.common.save}</Text>
             </Pressable>
 
-          </View>
+          </Animated.View>
       </KeyboardAvoidingView>
     </Modal>
   );
@@ -323,6 +359,10 @@ export function CreateInvoiceScreen({
   const [lastGstRate, setLastGstRate] = useState<GSTRate>(0);
   const [nameFocused, setNameFocused] = useState(false);
   const [phoneFocused, setPhoneFocused] = useState(false);
+  const [phoneError, setPhoneError] = useState(false);
+
+  const customerNameRef = useRef<TextInput>(null);
+  const customerPhoneRef = useRef<TextInput>(null);
 
   // ── Collapsible customer details ─────────────────────────
   const [customerExpanded, setCustomerExpanded] = useState(true);
@@ -352,11 +392,17 @@ export function CreateInvoiceScreen({
   const grandTotal = items.reduce((s, i) => s + i.total, 0);
 
   const openAddSheet = useCallback(() => {
+    customerNameRef.current?.blur();
+    customerPhoneRef.current?.blur();
+    Keyboard.dismiss();
     setEditingItem(null);
     setSheetVisible(true);
   }, []);
 
   const openEditSheet = useCallback((item: InvoiceItem) => {
+    customerNameRef.current?.blur();
+    customerPhoneRef.current?.blur();
+    Keyboard.dismiss();
     setEditingItem(item);
     setSheetVisible(true);
   }, []);
@@ -478,6 +524,7 @@ export function CreateInvoiceScreen({
             <View style={styles.inputWrapper}>
               <Text style={styles.inputLabel}>{t.invoice.customerName}</Text>
               <TextInput
+                ref={customerNameRef}
                 style={[styles.textInput, nameFocused && styles.textInputFocused]}
                 value={customerName}
                 onChangeText={setCustomerName}
@@ -493,19 +540,39 @@ export function CreateInvoiceScreen({
             <View style={[styles.inputWrapper, { marginBottom: 0 }]}>
               <Text style={styles.inputLabel}>{t.invoice.customerPhone}</Text>
               <TextInput
-                style={[styles.textInput, phoneFocused && styles.textInputFocused]}
+                ref={customerPhoneRef}
+                style={[
+                  styles.textInput,
+                  phoneFocused && styles.textInputFocused,
+                  phoneError && styles.textInputError,
+                ]}
                 value={customerPhone}
-                onChangeText={setCustomerPhone}
+                onChangeText={text => {
+                  // digits only
+                  const digits = text.replace(/[^0-9]/g, '');
+                  setCustomerPhone(digits);
+                  // clear error as user types
+                  if (phoneError) { setPhoneError(false); }
+                }}
                 placeholder={t.invoice.customerPhonePlaceholder}
                 placeholderTextColor={Colors.text.hint}
                 keyboardType="phone-pad"
                 returnKeyType="done"
                 onSubmitEditing={Keyboard.dismiss}
-                onFocus={() => setPhoneFocused(true)}
-                onBlur={() => setPhoneFocused(false)}
+                onFocus={() => { setPhoneFocused(true); setPhoneError(false); }}
+                onBlur={() => {
+                  setPhoneFocused(false);
+                  // validate only if user entered something
+                  if (customerPhone.length > 0 && customerPhone.length !== 10) {
+                    setPhoneError(true);
+                  }
+                }}
                 accessibilityLabel={t.invoice.customerPhone}
-                maxLength={15}
+                maxLength={10}
               />
+              {phoneError && (
+                <Text style={styles.inputError}>{t.invoice.phoneError}</Text>
+              )}
             </View>
           </Animated.View>
 
@@ -544,7 +611,7 @@ export function CreateInvoiceScreen({
           {items.length === 0 ? (
             <View style={styles.emptyItems}>
               <Image source={require('../../images/empty.png')} style={styles.emptyItemsIcon} resizeMode="contain" accessibilityElementsHidden />
-              <Text style={styles.emptyItemsText}>{t.invoiceHistory.empty}</Text>
+              <Text style={styles.emptyItemsText}>{t.invoice.noItems}</Text>
             </View>
           ) : (
             items.map((item, index) => (

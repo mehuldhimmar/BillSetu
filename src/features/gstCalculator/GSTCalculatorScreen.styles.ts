@@ -174,7 +174,7 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.06,
     shadowRadius: 6,
     elevation: 2,
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
   },
   resultCardTitle: {
     fontSize: 11,
@@ -182,13 +182,13 @@ export const styles = StyleSheet.create({
     color: Colors.text.hint,
     letterSpacing: 0.5,
     textTransform: 'uppercase',
-    marginBottom: 6,
+    marginBottom: 8,
   },
   resultRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 5,
+    paddingVertical: 10,
   },
   resultDivider: {
     height: 1,
