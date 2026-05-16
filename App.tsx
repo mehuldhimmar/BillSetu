@@ -26,6 +26,8 @@ import { AppAlertHost, showAlert } from './src/shared/components/AppAlert';
 import { NoInternetDialog } from './src/shared/components/NoInternetDialog';
 import { AppLanguage } from './src/shared/utils/settingsStorage';
 import { useInterstitialAd } from './src/shared/hooks/useInterstitialAd';
+import { useForceUpdate } from './src/shared/hooks/useForceUpdate';
+import { ForceUpdateScreen } from './src/features/forceUpdate/ForceUpdateScreen';
 
 // ── Interstitial Ad Unit IDs ──────────────────────────────────────────────────
 // Replace each placeholder with the corresponding ad unit ID from AdMob console.
@@ -69,11 +71,20 @@ function AppContent() {
 
   /**
    * App readiness:
-   *  - 'loading'   : checking AsyncStorage
+   *  - 'loading'   : checking AsyncStorage + Remote Config
    *  - 'language'  : first launch — show language selection
    *  - 'ready'     : main app flow
    */
   const [appState, setAppState] = useState<'loading' | 'language' | 'ready'>('loading');
+
+  // ── Force update check ───────────────────────────────────────────────────
+  const {
+    isLoading: isForceUpdateLoading,
+    forceUpdate,
+    currentVersion,
+    minVersion,
+    whatsNew,
+  } = useForceUpdate();
 
   // Load settings + business name + invoices + first-launch flag on mount
   useEffect(() => {
@@ -178,9 +189,20 @@ function AppContent() {
 
   // ── Render ────────────────────────────────────────────────────────────────
 
-  if (appState === 'loading') {
-    // Blank screen while AsyncStorage loads — avoids flash
+  if (appState === 'loading' || isForceUpdateLoading) {
+    // Blank screen while AsyncStorage + Remote Config loads — avoids flash
     return null;
+  }
+
+  // Show force update screen before anything else — user cannot proceed
+  if (forceUpdate) {
+    return (
+      <ForceUpdateScreen
+        currentVersion={currentVersion}
+        latestVersion={minVersion}
+        whatsNew={whatsNew}
+      />
+    );
   }
 
   if (appState === 'language') {
