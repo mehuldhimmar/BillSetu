@@ -10,9 +10,12 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 import { Colors } from '../../theme';
 import { useI18n } from '../../shared/i18n/I18nContext';
 import { styles } from './GSTCalculatorScreen.styles';
+
+const BANNER_AD_UNIT_ID = __DEV__ ? TestIds.ADAPTIVE_BANNER : 'ca-app-pub-xxxxxxxx/yyyyyyyyyy';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -359,7 +362,13 @@ export function GSTCalculatorScreen({
           </View>
         </View>
 
-
+        {/* ── Banner Ad — below results ── */}
+        <View style={{ alignItems: 'center', marginTop: 8 }}>
+          <BannerAd
+            unitId={BANNER_AD_UNIT_ID}
+            size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          />
+        </View>
 
       </View>
     </View>

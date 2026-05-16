@@ -22,6 +22,7 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 import { Colors } from '../../theme';
 import { showAlert } from '../../shared/components/AppAlert';
 import {
@@ -34,6 +35,8 @@ import {
 import { SUPPORTED_LANGUAGES } from '../../shared/constants/languages';
 import { useI18n } from '../../shared/i18n/I18nContext';
 import { styles } from './SettingsScreen.styles';
+
+const BANNER_AD_UNIT_ID = __DEV__ ? TestIds.ADAPTIVE_BANNER : 'ca-app-pub-xxxxxxxx/yyyyyyyyyy';
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
@@ -368,6 +371,14 @@ export function SettingsScreen({ isVisible = false, onBack }: SettingsScreenProp
           </View>
 
         </ScrollView>
+
+        {/* ── Bottom Banner Ad ── */}
+        <View style={{ alignItems: 'center', paddingBottom: insets.bottom }}>
+          <BannerAd
+            unitId={BANNER_AD_UNIT_ID}
+            size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          />
+        </View>
       </View>
 
       {/* ── Language Modal ── */}

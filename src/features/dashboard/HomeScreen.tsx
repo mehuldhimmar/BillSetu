@@ -8,10 +8,13 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 import { Colors } from '../../theme';
 import { useI18n } from '../../shared/i18n/I18nContext';
 import { DashboardCard } from './components/DashboardCard';
 import { styles } from './HomeScreen.styles';
+
+const BANNER_AD_UNIT_ID = __DEV__ ? TestIds.ADAPTIVE_BANNER : 'ca-app-pub-xxxxxxxx/yyyyyyyyyy';
 
 interface HomeScreenProps {
   businessName?: string;
@@ -129,6 +132,14 @@ export function HomeScreen({
         </View>
 
       </ScrollView>
+
+      {/* ── Bottom Banner Ad ── */}
+      <View style={{ alignItems: 'center', paddingBottom: insets.bottom }}>
+        <BannerAd
+          unitId={BANNER_AD_UNIT_ID}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+        />
+      </View>
     </View>
   );
 }

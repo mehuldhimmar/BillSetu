@@ -17,11 +17,14 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 import { showAlert } from '../../shared/components/AppAlert';
 import { Colors } from '../../theme';
 import { useI18n } from '../../shared/i18n/I18nContext';
 import { InvoiceData } from './CreateInvoiceScreen';
 import { styles } from './InvoiceHistoryScreen.styles';
+
+const BANNER_AD_UNIT_ID = __DEV__ ? TestIds.ADAPTIVE_BANNER : 'ca-app-pub-xxxxxxxx/yyyyyyyyyy';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -321,6 +324,14 @@ export function InvoiceHistoryScreen({
         keyboardDismissMode="on-drag"
         ItemSeparatorComponent={() => <View style={styles.separator} />}
       />
+
+      {/* ── Bottom Banner Ad ── */}
+      <View style={{ alignItems: 'center', paddingBottom: insets.bottom }}>
+        <BannerAd
+          unitId={BANNER_AD_UNIT_ID}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+        />
+      </View>
     </View>
   );
 }

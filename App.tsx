@@ -25,6 +25,14 @@ import { LanguageSelectionScreen } from './src/features/language/LanguageSelecti
 import { AppAlertHost, showAlert } from './src/shared/components/AppAlert';
 import { NoInternetDialog } from './src/shared/components/NoInternetDialog';
 import { AppLanguage } from './src/shared/utils/settingsStorage';
+import { useInterstitialAd } from './src/shared/hooks/useInterstitialAd';
+
+// ── Interstitial Ad Unit IDs ──────────────────────────────────────────────────
+// Replace each placeholder with the corresponding ad unit ID from AdMob console.
+const AD_UNIT_SAVE_INVOICE    = 'ca-app-pub-xxxxxxxx/aaaaaaaaaa'; // Trigger 1: Save & Close invoice
+const AD_UNIT_SHARE_INVOICE   = 'ca-app-pub-xxxxxxxx/bbbbbbbbbb'; // Trigger 2: Share PDF → home
+const AD_UNIT_OPEN_GST        = 'ca-app-pub-xxxxxxxx/cccccccccc'; // Trigger 3: Home → GST Calculator
+const AD_UNIT_CLOSE_GST       = 'ca-app-pub-xxxxxxxx/dddddddddd'; // Trigger 4: GST Calculator → Home
 
 type Screen =
   | 'home'
@@ -42,6 +50,12 @@ type PreviewSource = 'createInvoice' | 'invoiceHistory';
 
 function AppContent() {
   const { setLanguage } = useI18n();
+
+  // ── Interstitial ads — one instance per trigger ──────────────────────────
+  const { showAd: showSaveInvoiceAd }  = useInterstitialAd({ adUnitId: AD_UNIT_SAVE_INVOICE });
+  const { showAd: showShareInvoiceAd } = useInterstitialAd({ adUnitId: AD_UNIT_SHARE_INVOICE });
+  const { showAd: showOpenGSTAd }      = useInterstitialAd({ adUnitId: AD_UNIT_OPEN_GST });
+  const { showAd: showCloseGSTAd }     = useInterstitialAd({ adUnitId: AD_UNIT_CLOSE_GST });
 
   const [currentScreen, setCurrentScreen] = useState<Screen>('home');
   const [currentInvoice, setCurrentInvoice] = useState<InvoiceData | null>(null);
@@ -124,19 +138,43 @@ function AppContent() {
       id: `${invoice.invoiceNumber}-${Date.now()}`,
       savedAt: new Date().toISOString(),
     };
+
+    let isNewlySaved = false;
     setSavedInvoices(prev => {
       // Avoid duplicates if user taps Save & Close twice
       const alreadySaved = prev.some(i => i.invoiceNumber === invoice.invoiceNumber);
       if (alreadySaved) { return prev; }
+      isNewlySaved = true;
       const updated = [stored, ...prev];
       saveInvoices(updated); // persist to AsyncStorage
       return updated;
     });
+
     // Reset the create screen so the next invoice starts fresh
     setCreateInvoiceKey(k => k + 1);
     setCurrentInvoice(null);
-    setCurrentScreen('home');
+
+    // Trigger #1 — Save & Close → [Ad] → Home
+    // Trigger #2 — Share PDF close → [Ad] → Home
+    // Both paths call onSave; we use the save ad for new invoices and
+    // the share ad for already-saved ones (share from history mode).
+    const adToShow = isNewlySaved ? showSaveInvoiceAd : showShareInvoiceAd;
+    adToShow(() => setCurrentScreen('home'));
   };
+
+  /**
+   * Trigger #3 — Opening GST Calculator from Home → [Ad] → GSTCalculator
+   * Trigger #4 — Closing GST Calculator → [Ad] → Home
+   * The shared session cap (max 3 / 2-min cooldown) prevents both from
+   * firing back-to-back in the same session window.
+   */
+  const handleOpenGSTCalculator = useCallback(() => {
+    showOpenGSTAd(() => setCurrentScreen('gstCalculator'));
+  }, [showOpenGSTAd]);
+
+  const handleCloseGSTCalculator = useCallback(() => {
+    showCloseGSTAd(() => setCurrentScreen('home'));
+  }, [showCloseGSTAd]);
 
   // ── Render ────────────────────────────────────────────────────────────────
 
@@ -159,7 +197,7 @@ function AppContent() {
           businessName={businessName}
           invoiceCount={savedInvoices.length}
           totalAmount={savedInvoices.reduce((sum, inv) => sum + (inv.grandTotal ?? 0), 0)}
-          onGSTCalculator={() => setCurrentScreen('gstCalculator')}
+          onGSTCalculator={handleOpenGSTCalculator}
           onCreateInvoice={() => setCurrentScreen('createInvoice')}
           onHistory={() => setCurrentScreen('invoiceHistory')}
           onBusinessProfile={() => setCurrentScreen('businessProfile')}
@@ -170,7 +208,7 @@ function AppContent() {
       <View style={[styles.screen, show('gstCalculator')]}>
         <GSTCalculatorScreen
           isVisible={currentScreen === 'gstCalculator'}
-          onBack={() => setCurrentScreen('home')}
+          onBack={handleCloseGSTCalculator}
         />
       </View>
 
