@@ -49,15 +49,16 @@ export const gu: Translations = {
     termsConditions: 'નિયમો અને શરતો',
     rateUs: 'અમને રેટ કરો',
     shareApp: 'ઍપ શૅર કરો',
-    version: 'BillSetu v1.0.0',
+    version: 'BillSetu v1.0.2',
     selectLanguage: 'ભાષા પસંદ કરો',
     invoicePrefixPlaceholder: 'દા.ત. INV-',
     invalidPrefix: 'અમાન્ય ઉપસર્ગ',
     invalidPrefixMessage: 'ઇન્વૉઇસ ઉપસર્ગ ખાલી ન હોઈ શકે.',
     errorSave: 'સેટિંગ્સ સાચવી શકાઈ નહીં. કૃપા કરીને ફરી પ્રયાસ કરો.',
     errorLink: 'લિંક ખોલી શકાઈ નહીં. કૃપા કરીને ફરી પ્રયાસ કરો.',
-    shareMessage: 'BillSetu સાથે સેકન્ડોમાં વ્યાવસાયિક GST ઇન્વૉઇસ બનાવો! હમણાં ડાઉનલોડ કરો: https://billsetu.app',
+    shareMessage: 'BillSetu સાથે સેકન્ડોમાં વ્યાવસાયિક GST ઇન્વૉઇસ બનાવો! હમણાં ડાઉનલોડ કરો: https://play.google.com/store/apps/details?id=com.billsetu',
     shareTitle: 'BillSetu — GST ઇન્વૉઇસ મેકર',
+    legalInformation: 'કાનૂની માહિતી',
   },
 
   // Business Profile
@@ -159,6 +160,8 @@ export const gu: Translations = {
     inclusive: 'GST સમાવિષ્ટ',
     exclusive: 'GST વધારાનો',
     reset: 'રીસેટ',
+    disclaimer: 'GST દર સુવિધા માટે આપવામાં આવ્યા છે. સત્તાવાર GST માહિતી: https://www.gst.gov.in/ BillSetu કોઈ સરકારી સત્તામંડળ સાથે સંલગ્ન નથી.',
+    disclaimerLinkLabel: 'https://www.gst.gov.in/',
   },
 
   // Alerts

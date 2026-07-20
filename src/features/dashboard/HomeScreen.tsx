@@ -14,7 +14,7 @@ import { useI18n } from '../../shared/i18n/I18nContext';
 import { DashboardCard } from './components/DashboardCard';
 import { styles } from './HomeScreen.styles';
 
-const BANNER_AD_UNIT_ID = __DEV__ ? TestIds.ADAPTIVE_BANNER : 'ca-app-pub-xxxxxxxx/yyyyyyyyyy';
+const BANNER_AD_UNIT_ID = __DEV__ ? TestIds.ADAPTIVE_BANNER : 'ca-app-pub-4943352994828907/6572475331';
 
 interface HomeScreenProps {
   businessName?: string;

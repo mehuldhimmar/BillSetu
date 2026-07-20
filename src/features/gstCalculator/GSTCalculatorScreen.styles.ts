@@ -264,4 +264,18 @@ export const styles = StyleSheet.create({
     height: 20,
     tintColor: '#FFFFFF',
   },
+
+  // ── Disclaimer Note ──────────────────────────────────────
+  disclaimer: {
+    fontSize: 11,
+    color: Colors.text.hint,
+    textAlign: 'center',
+    lineHeight: 16,
+    paddingHorizontal: Spacing.sm,
+    paddingTop: 4,
+  },
+  disclaimerLink: {
+    color: Colors.primary,
+    textDecorationLine: 'underline',
+  },
 });

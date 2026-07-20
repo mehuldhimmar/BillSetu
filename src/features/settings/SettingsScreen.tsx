@@ -36,7 +36,7 @@ import { SUPPORTED_LANGUAGES } from '../../shared/constants/languages';
 import { useI18n } from '../../shared/i18n/I18nContext';
 import { styles } from './SettingsScreen.styles';
 
-const BANNER_AD_UNIT_ID = __DEV__ ? TestIds.ADAPTIVE_BANNER : 'ca-app-pub-xxxxxxxx/yyyyyyyyyy';
+const BANNER_AD_UNIT_ID = __DEV__ ? TestIds.ADAPTIVE_BANNER : 'ca-app-pub-4943352994828907/4081814454';
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
@@ -165,9 +165,10 @@ interface SettingsScreenProps {
   onBack?: () => void;
   onOpenPrivacyPolicy?: () => void;
   onOpenTerms?: () => void;
+  onOpenLegalInfo?: () => void;
 }
 
-export function SettingsScreen({ isVisible = false, onBack, onOpenPrivacyPolicy, onOpenTerms }: SettingsScreenProps) {
+export function SettingsScreen({ isVisible = false, onBack, onOpenPrivacyPolicy, onOpenTerms, onOpenLegalInfo }: SettingsScreenProps) {
   const insets = useSafeAreaInsets();
   const { t, setLanguage } = useI18n();
 
@@ -255,15 +256,24 @@ export function SettingsScreen({ isVisible = false, onBack, onOpenPrivacyPolicy,
     onOpenTerms?.();
   }, [onOpenTerms]);
 
+  const handleLegalInfo = useCallback(() => {
+    onOpenLegalInfo?.();
+  }, [onOpenLegalInfo]);
+
   const handleRateUs = useCallback(() => {
-    // Deep-link to Play Store / App Store listing
-    const url = Platform.OS === 'android'
+    // Try the native deep-link first; fall back to the Play Store web URL
+    const deepLink = Platform.OS === 'android'
       ? 'market://details?id=com.billsetu'
       : 'itms-apps://itunes.apple.com/app/idXXXXXXXXX?action=write-review';
-    Linking.openURL(url).catch(() =>
-      Linking.openURL('https://billsetu.app').catch(() => {}),
+    const webFallback = Platform.OS === 'android'
+      ? 'https://play.google.com/store/apps/details?id=com.billsetu'
+      : 'https://apps.apple.com/app/idXXXXXXXXX?action=write-review';
+    Linking.openURL(deepLink).catch(() =>
+      Linking.openURL(webFallback).catch(() =>
+        showAlert({ title: t.alerts.errorTitle, message: t.settings.errorLink }),
+      ),
     );
-  }, []);
+  }, [t]);
 
   const handleShareApp = useCallback(async () => {
     try {
@@ -358,6 +368,13 @@ export function SettingsScreen({ isVisible = false, onBack, onOpenPrivacyPolicy,
                 iconBg={Colors.selected.background}
                 label={t.settings.shareApp}
                 onPress={handleShareApp}
+                showDivider={true}
+              />
+              <SettingsRow
+                image={require('../../images/privacy.png')}
+                iconBg={Colors.selected.background}
+                label={t.settings.legalInformation}
+                onPress={handleLegalInfo}
                 showDivider={false}
               />
             </View>

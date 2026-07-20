@@ -22,6 +22,7 @@ import { InvoiceHistoryScreen, StoredInvoice } from './src/features/invoice/Invo
 import { BusinessProfileScreen } from './src/features/businessProfile/BusinessProfileScreen';
 import { SettingsScreen } from './src/features/settings/SettingsScreen';
 import { WebViewScreen } from './src/features/webView/WebViewScreen';
+import { LegalInformationScreen } from './src/features/settings/LegalInformationScreen';
 import { LanguageSelectionScreen } from './src/features/language/LanguageSelectionScreen';
 import { AppAlertHost, showAlert } from './src/shared/components/AppAlert';
 import { NoInternetDialog } from './src/shared/components/NoInternetDialog';
@@ -32,10 +33,10 @@ import { ForceUpdateScreen } from './src/features/forceUpdate/ForceUpdateScreen'
 
 // ── Interstitial Ad Unit IDs ──────────────────────────────────────────────────
 // Replace each placeholder with the corresponding ad unit ID from AdMob console.
-const AD_UNIT_SAVE_INVOICE    = 'ca-app-pub-xxxxxxxx/aaaaaaaaaa'; // Trigger 1: Save & Close invoice
-const AD_UNIT_SHARE_INVOICE   = 'ca-app-pub-xxxxxxxx/bbbbbbbbbb'; // Trigger 2: Share PDF → home
-const AD_UNIT_OPEN_GST        = 'ca-app-pub-xxxxxxxx/cccccccccc'; // Trigger 3: Home → GST Calculator
-const AD_UNIT_CLOSE_GST       = 'ca-app-pub-xxxxxxxx/dddddddddd'; // Trigger 4: GST Calculator → Home
+const AD_UNIT_SAVE_INVOICE    = 'ca-app-pub-4943352994828907/4493106906'; // Trigger 1: Save & Close invoice
+const AD_UNIT_SHARE_INVOICE   = 'ca-app-pub-4943352994828907/1866943562'; // Trigger 2: Share PDF → home
+const AD_UNIT_OPEN_GST        = 'ca-app-pub-4943352994828907/8240780224'; // Trigger 3: Home → GST Calculator
+const AD_UNIT_CLOSE_GST       = 'ca-app-pub-4943352994828907/8240780224'; // Trigger 4: GST Calculator → Home
 
 type Screen =
   | 'home'
@@ -45,6 +46,7 @@ type Screen =
   | 'invoiceHistory'
   | 'businessProfile'
   | 'settings'
+  | 'legalInformation'
   | 'webView';
 
 /** Where the invoice preview was navigated from */
@@ -323,6 +325,7 @@ function AppContent() {
               'https://mehuldhimmar.github.io/BillSetu/Terms.html',
             )
           }
+          onOpenLegalInfo={() => setCurrentScreen('legalInformation')}
         />
       </View>
 
@@ -331,6 +334,14 @@ function AppContent() {
           <WebViewScreen
             title={webViewConfig.title}
             url={webViewConfig.url}
+            onBack={() => setCurrentScreen('settings')}
+          />
+        </View>
+      )}
+
+      {currentScreen === 'legalInformation' && (
+        <View style={styles.screen}>
+          <LegalInformationScreen
             onBack={() => setCurrentScreen('settings')}
           />
         </View>

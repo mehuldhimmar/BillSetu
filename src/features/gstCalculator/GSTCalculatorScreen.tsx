@@ -3,6 +3,7 @@ import {
   BackHandler,
   Image,
   Keyboard,
+  Linking,
   Pressable,
   StatusBar,
   Text,
@@ -15,7 +16,7 @@ import { Colors } from '../../theme';
 import { useI18n } from '../../shared/i18n/I18nContext';
 import { styles } from './GSTCalculatorScreen.styles';
 
-const BANNER_AD_UNIT_ID = __DEV__ ? TestIds.ADAPTIVE_BANNER : 'ca-app-pub-xxxxxxxx/yyyyyyyyyy';
+const BANNER_AD_UNIT_ID = __DEV__ ? TestIds.ADAPTIVE_BANNER : 'ca-app-pub-4943352994828907/9909085113';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -369,6 +370,20 @@ export function GSTCalculatorScreen({
             size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
           />
         </View>
+
+        {/* ── Disclaimer ── */}
+        <Text style={styles.disclaimer}>
+          {t.gstCalculator.disclaimer.split(t.gstCalculator.disclaimerLinkLabel)[0]}
+          <Text
+            style={styles.disclaimerLink}
+            onPress={() => Linking.openURL('https://www.gst.gov.in').catch(() => {})}
+            accessibilityRole="link"
+            accessibilityLabel="Open official GST website"
+          >
+            {t.gstCalculator.disclaimerLinkLabel}
+          </Text>
+          {t.gstCalculator.disclaimer.split(t.gstCalculator.disclaimerLinkLabel)[1]}
+        </Text>
 
       </View>
     </View>

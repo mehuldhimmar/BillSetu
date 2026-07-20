@@ -47,15 +47,16 @@ export const en = {
     termsConditions: 'Terms & Conditions',
     rateUs: 'Rate Us',
     shareApp: 'Share App',
-    version: 'BillSetu v1.0.0',
+    version: 'BillSetu v1.0.3',
     selectLanguage: 'Select Language',
     invoicePrefixPlaceholder: 'e.g. INV-',
     invalidPrefix: 'Invalid Prefix',
     invalidPrefixMessage: 'Invoice prefix cannot be empty.',
     errorSave: 'Could not save settings. Please try again.',
     errorLink: 'Could not open the link. Please try again.',
-    shareMessage: 'Create professional GST invoices in seconds with BillSetu! Download now: https://billsetu.app',
+    shareMessage: 'Create professional GST invoices in seconds with BillSetu! Download now: https://play.google.com/store/apps/details?id=com.billsetu',
     shareTitle: 'BillSetu — GST Invoice Maker',
+    legalInformation: 'Legal Information',
   },
 
   // Business Profile
@@ -157,6 +158,8 @@ export const en = {
     inclusive: 'GST Inclusive',
     exclusive: 'GST Exclusive',
     reset: 'Reset',
+    disclaimer: 'GST rates are provided for convenience. Official GST information: https://www.gst.gov.in/ BillSetu is not affiliated with any government authority.',
+    disclaimerLinkLabel: 'https://www.gst.gov.in/',
   },
 
   // Alerts

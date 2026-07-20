@@ -24,7 +24,7 @@ import { useI18n } from '../../shared/i18n/I18nContext';
 import { InvoiceData } from './CreateInvoiceScreen';
 import { styles } from './InvoiceHistoryScreen.styles';
 
-const BANNER_AD_UNIT_ID = __DEV__ ? TestIds.ADAPTIVE_BANNER : 'ca-app-pub-xxxxxxxx/yyyyyyyyyy';
+const BANNER_AD_UNIT_ID = __DEV__ ? TestIds.ADAPTIVE_BANNER : 'ca-app-pub-4943352994828907/7693985311';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
