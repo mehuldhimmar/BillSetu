@@ -4,7 +4,6 @@ import {
   Image,
   Keyboard,
   KeyboardAvoidingView,
-  PermissionsAndroid,
   Platform,
   Pressable,
   ScrollView,
@@ -112,32 +111,9 @@ export function BusinessProfileScreen({ onBack }: BusinessProfileScreenProps) {
     phoneError === null;
 
   // ── Logo upload handler ──────────────────────────────────
-  const handleUploadLogo = useCallback(async () => {
-    // Android: request photo library permission before opening the picker
-    if (Platform.OS === 'android') {
-      const permission =
-        Number(Platform.Version) >= 33
-          ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
-          : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
-
-      const already = await PermissionsAndroid.check(permission);
-      if (!already) {
-        const result = await PermissionsAndroid.request(permission, {
-          title: 'Photo Access',
-          message: 'BillSetu needs access to your photos to set a business logo.',
-          buttonPositive: 'Allow',
-          buttonNegative: 'Deny',
-        });
-        if (result !== PermissionsAndroid.RESULTS.GRANTED) {
-          showAlert({
-            title: t.alerts.errorTitle,
-            message: 'Photo permission is required to upload a logo. Please enable it in Settings.',
-          });
-          return;
-        }
-      }
-    }
-
+  // Uses the Android system photo picker (API 33+) / iOS native picker,
+  // which does not require READ_MEDIA_IMAGES or READ_EXTERNAL_STORAGE permissions.
+  const handleUploadLogo = useCallback(() => {
     launchImageLibrary(
       { mediaType: 'photo', quality: 0.8, selectionLimit: 1 },
       response => {
@@ -146,7 +122,7 @@ export function BusinessProfileScreen({ onBack }: BusinessProfileScreenProps) {
         if (uri) { setLogoUri(uri); }
       },
     );
-  }, [t]);
+  }, []);
 
   // ── Save handler ─────────────────────────────────────────
   const handleSave = useCallback(async () => {
