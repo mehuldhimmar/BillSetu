@@ -13,8 +13,9 @@ import { Colors } from '../../theme';
 import { useI18n } from '../../shared/i18n/I18nContext';
 import { DashboardCard } from './components/DashboardCard';
 import { styles } from './HomeScreen.styles';
+import { AD_UNIT_IDS } from '../../shared/constants/adConfig';
 
-const BANNER_AD_UNIT_ID = __DEV__ ? TestIds.ADAPTIVE_BANNER : 'ca-app-pub-4943352994828907/6572475331';
+const BANNER_AD_UNIT_ID = __DEV__ ? TestIds.ADAPTIVE_BANNER : AD_UNIT_IDS.BANNER_HOME;
 
 interface HomeScreenProps {
   businessName?: string;

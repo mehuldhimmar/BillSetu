@@ -35,8 +35,9 @@ import {
 import { SUPPORTED_LANGUAGES } from '../../shared/constants/languages';
 import { useI18n } from '../../shared/i18n/I18nContext';
 import { styles } from './SettingsScreen.styles';
+import { AD_UNIT_IDS } from '../../shared/constants/adConfig';
 
-const BANNER_AD_UNIT_ID = __DEV__ ? TestIds.ADAPTIVE_BANNER : 'ca-app-pub-4943352994828907/4081814454';
+const BANNER_AD_UNIT_ID = __DEV__ ? TestIds.ADAPTIVE_BANNER : AD_UNIT_IDS.BANNER_SETTINGS;
 
 // ── Constants ────────────────────────────────────────────────────────────────
 

@@ -15,8 +15,9 @@ import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads'
 import { Colors } from '../../theme';
 import { useI18n } from '../../shared/i18n/I18nContext';
 import { styles } from './GSTCalculatorScreen.styles';
+import { AD_UNIT_IDS } from '../../shared/constants/adConfig';
 
-const BANNER_AD_UNIT_ID = __DEV__ ? TestIds.ADAPTIVE_BANNER : 'ca-app-pub-4943352994828907/9909085113';
+const BANNER_AD_UNIT_ID = __DEV__ ? TestIds.ADAPTIVE_BANNER : AD_UNIT_IDS.BANNER_GST_CALCULATOR;
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
